@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+ 
+<html>
+ 
+<head>
+     <meta charset='utf-8'>
+    <title>Байшин</title>
+    <script type="text/javascript" src="libs/three.js"></script>
+    <script type="text/javascript" src="libs/TrackballControls.js"></script>
+    <style>
+            body { margin: 0; }
+canvas { width: 100%; height: 100% }
+    </style>
+</head>
+<body>
+ 
+<div id="WebGL-output">
+</div>
+ 
+<script type="text/javascript">
+ 
+    function init() {
+ 
+        var width  = window.innerWidth / 2,
+        height = window.innerHeight;
+
+    var scene = new THREE.Scene();
+
+    var axes = new THREE.AxisHelper(100);
+    scene.add(axes);
+
+    var camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.set(0, 0, 100);
+
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    var geometry = new THREE.PlaneGeometry(300, 400, 9, 9);
+
+    var material = new THREE.MeshBasicMaterial({
+        color: 0x848482, wireframe: true
+    });
+
+    var plane = new THREE.Mesh(geometry, material);
+
+    plane.rotation.x = Math.PI/2;
+
+    scene.add(plane);
+
+    var grassGeo = new THREE.BoxGeometry(300, 400, 2);
+    var grassMat = new THREE.MeshBasicMaterial({
+    });
+    var zuleg = new THREE.ImageUtils.loadTexture("grass.jpg");
+
+    var grass = new THREE.Mesh(grassGeo, grassMat);
+    grass.material.map = zuleg;
+    
+    grass.rotation.x = Math.PI/2;
+
+    scene.add(grass);
+
+    //Хана
+
+    var wallGeo = new THREE.BoxGeometry(1,81,101);
+    var wallMat = new THREE.MeshBasicMaterial({
+    });
+    var hana = new THREE.ImageUtils.loadTexture("brickwall.jpg");
+
+    var wall = new THREE.Mesh(wallGeo, wallMat);
+    var wall2 = new THREE.Mesh(wallGeo, wallMat);
+    var wall3 = new THREE.Mesh(wallGeo, wallMat);
+    var wall4 = new THREE.Mesh(wallGeo, wallMat);
+    wall.material.map = hana;
+
+    wall.rotation.y = Math.PI/2;
+    wall.position.x = 0;
+    wall.position.y = 40;
+    wall.position.z = 50;
+    wall2.rotation.y = Math.PI/2;
+    wall2.position.x = 0;
+    wall2.position.y = 40;
+    wall2.position.z = -50;
+    wall3.position.x = 50;
+    wall3.position.y = 40;
+    wall3.position.z = 0;
+    wall4.position.x = -50;
+    wall4.position.y = 40;
+    wall4.position.z = 0;
+
+    scene.add(wall, wall2, wall3, wall4); 
+
+    //Шал, тааз
+
+    var stGeo = new THREE.BoxGeometry(1, 100, 100);
+    var stMat = new THREE.MeshBasicMaterial({});
+    var stMat2 = new THREE.MeshBasicMaterial({});
+    var taaz = new THREE.ImageUtils.loadTexture("stair.jpg");
+    var shal = new THREE.ImageUtils.loadTexture("wood.jpg");
+
+    var st = new THREE.Mesh(stGeo, stMat);
+    st.material.map = shal;
+    var st2 = new THREE.Mesh(stGeo, stMat2);
+    st2.material.map = taaz;
+
+    st.rotation.z = Math.PI/2;
+    st.position.y = 1;
+    st2.rotation.z = Math.PI/2;
+    st2.position.y = 81;
+
+    scene.add(st, st2);
+
+    //Дээвэр
+
+    function rf(){
+        var shape = new THREE.Shape();
+        shape.moveTo(0, 43);
+        shape.lineTo(-52, 0);
+        shape.lineTo(52, 0);
+        return shape;
+    }
+
+
+    var RGeo = new THREE.ShapeGeometry(rf());
+    var RMat = new THREE.MeshBasicMaterial({
+        color: 0x966f33
+    })
+
+    var R = new THREE.Mesh(RGeo, RMat);
+    var R2 = new THREE.Mesh(RGeo, RMat);
+
+    R.position.y = 80;
+    R.position.z = 50;
+    R2.rotation.y = Math.PI;
+    R2.position.y = 80;
+    R2.position.z = -50;
+
+    scene.add(R, R2);
+
+    var roofGeo = new THREE.BoxGeometry(5, 70, 102);
+    var roofMat = new THREE.MeshBasicMaterial({});
+    var deever = new THREE.ImageUtils.loadTexture("roofing1.jpg");
+
+    var roof = new THREE.Mesh(roofGeo, roofMat);
+    var roof2 = new THREE.Mesh(roofGeo, roofMat);
+    roof.material.map = deever;
+
+    roof.rotation.z = 70;
+    roof.position.x = 26;
+    roof.position.y = 100;
+    roof2.rotation.z = -70;
+    roof2.position.x = -26;
+    roof2.position.y = 100;
+
+    scene.add(roof, roof2);
+
+    //Довжоо
+
+    var dGeo = new THREE.BoxGeometry(5, 20, 10);
+    var dGeo2 = new THREE.BoxGeometry(3, 30, 30);
+    var dMat = new THREE.MeshBasicMaterial({});
+    var dovjoo = new THREE.ImageUtils.loadTexture("stair.jpg");
+
+    var d = new THREE.Mesh(dGeo, dMat);
+    var d2 = new THREE.Mesh(dGeo2, dMat);
+    d.material.map = dovjoo;
+    
+    d.position.x = 0;
+    d.position.y = 2.5;
+    d.position.z = 55;
+    d.rotation.z = Math.PI/2;
+    d2.position.x = 0;
+    d2.position.y = 1.5;
+    d2.position.z = -65;
+    d2.rotation.z = Math.PI/2;
+
+    scene.add(d, d2);
+
+    var zamGeo = new THREE.BoxGeometry(20, 140, 2);
+    var zamGeo2 = new THREE.BoxGeometry(50, 150, 2);
+    var zamMat = new THREE.MeshBasicMaterial({});
+    var Z = new THREE.ImageUtils.loadTexture("stair.jpg");
+
+    var zam = new THREE.Mesh(zamGeo, zamMat);
+    var zam2 = new THREE.Mesh(zamGeo, zamMat);
+    var zam3 = new THREE.Mesh(zamGeo, zamMat);
+    var zam4 = new THREE.Mesh(zamGeo, zamMat);
+    var gzam = new THREE.Mesh(zamGeo2, zamMat);
+    zam.material.map = Z;
+
+    zam.rotation.x = Math.PI/2;
+    zam.position.x = 0;
+    zam.position.y = 2;
+    zam.position.z = 130;
+    zam2.rotation.x = Math.PI/2;
+    zam2.rotation.z = Math.PI/2;
+    zam2.position.x = 60;
+    zam2.position.y = 2;
+    zam2.position.z = -65;
+    zam3.rotation.x = Math.PI/2;
+    zam3.position.x = 120;
+    zam3.position.y = 2;
+    zam3.position.z = 15;
+    zam4.rotation.x = Math.PI/2;
+    zam4.rotation.z = Math.PI/2;
+    zam4.position.x = 60;
+    zam4.position.y = 2;
+    zam4.position.z = 90;
+    gzam.rotation.x = Math.PI/2;
+    gzam.position.x = -90;
+    gzam.position.y = 2;
+    gzam.position.z = 125;
+
+    scene.add(zam, zam2, zam3, zam4, gzam);
+
+    //Цонхнууд
+
+    var windowGeo = new THREE.BoxGeometry(25, 40, 2);
+    var windowMat = new THREE.MeshBasicMaterial({});
+    var tsonh = new THREE.ImageUtils.loadTexture("window3.jpg");
+
+    var W = new THREE.Mesh(windowGeo, windowMat);
+    var W2 = new THREE.Mesh(windowGeo, windowMat);
+    var W3 = new THREE.Mesh(windowGeo, windowMat);
+    var W4 = new THREE.Mesh(windowGeo, windowMat);
+    var W5 = new THREE.Mesh(windowGeo, windowMat);
+    var W6 = new THREE.Mesh(windowGeo, windowMat);
+    var W7 = new THREE.Mesh(windowGeo, windowMat);
+    var W8 = new THREE.Mesh(windowGeo, windowMat);
+    W.material.map = tsonh;
+
+    
+    W.rotation.y = Math.PI/2;
+    W.position.x = 50;
+    W.position.y = 30;
+    W.position.z = 25;
+    W2.rotation.y = Math.PI/2;
+    W2.position.x = 50;
+    W2.position.y = 30;
+    W2.position.z = -25;
+    W3.rotation.x = Math.PI;
+    W3.position.x = 35;
+    W3.position.y = 30;
+    W3.position.z = -50;
+    W4.rotation.x = Math.PI;
+    W4.position.x = -35;
+    W4.position.y = 30;
+    W4.position.z = -50;
+    W5.position.x = 35;
+    W5.position.y = 30;
+    W5.position.z = 50;
+    W6.position.x = -35;
+    W6.position.y = 30;
+    W6.position.z = 50;
+
+    scene.add(W, W2, W3, W4, W5, W6);
+
+    //Хаалганууд
+
+    var doorGeo = new THREE.BoxGeometry(30, 60, 2);
+    var doorGeo2 = new THREE.BoxGeometry(20, 60, 2);
+    var doorGeo3 = new THREE.BoxGeometry(50, 70, 2);
+    var doorMat = new THREE.MeshBasicMaterial({});
+    var doorMat2 = new THREE.MeshBasicMaterial({});
+    var doorMat3 = new THREE.MeshBasicMaterial({});
+    var frontdoor = new THREE.ImageUtils.loadTexture("frontdoor.png");
+    var frontdoor2 = new THREE.ImageUtils.loadTexture("frontdoor2.png");
+    var garageDoor = new THREE.ImageUtils.loadTexture("door2.jpg");
+
+    var door = new THREE.Mesh(doorGeo, doorMat);
+    door.material.map = frontdoor;
+    var door2 = new THREE.Mesh(doorGeo2, doorMat2);
+    door2.material.map = frontdoor2;
+    var garagedoor = new THREE.Mesh(doorGeo3, doorMat3);
+    garagedoor.material.map = garageDoor;
+
+    door.position.y = 30;
+    door.position.z = -50;
+    door.rotation.y = Math.PI;
+    door2.position.y = 30;
+    door2.position.z = 50;
+    garagedoor.position.x = -90;
+    garagedoor.position.y = 35;
+    garagedoor.position.z = 51;
+
+    scene.add(door, door2, garagedoor);
+
+    //Garage
+
+    var garageGeo = new THREE.BoxGeometry(80, 80, 2);
+    var garageGeo2 = new THREE.BoxGeometry(100, 80, 2);
+    var garageMat = new THREE.MeshBasicMaterial({
+    })
+    var rock = new THREE.ImageUtils.loadTexture("rock.jpg");
+
+    var garage = new THREE.Mesh(garageGeo, garageMat);
+    var garage2 = new THREE.Mesh(garageGeo, garageMat);
+    var garage3 = new THREE.Mesh(garageGeo2, garageMat);
+    var garage4 = new THREE.Mesh(garageGeo2, garageMat);
+    var garage5 = new THREE.Mesh(garageGeo2, garageMat);
+    garage.material.map = rock;
+
+    garage.position.x = -90;
+    garage.position.y = 40;
+    garage.position.z = -50;
+    garage2.position.x = -90;
+    garage2.position.y = 40;
+    garage2.position.z = 50;
+    garage3.rotation.y = Math.PI/2;
+    garage3.position.x = -130;
+    garage3.position.y = 40;
+    garage4.rotation.x = Math.PI/2;
+    garage4.rotation.z = Math.PI/2;
+    garage4.position.x = -90;
+    garage4.position.y = 80;
+    garage5.rotation.x = Math.PI/2;
+    garage5.rotation.z = Math.PI/2;
+    garage5.position.x = -90;
+    garage5.position.y = 1;
+
+    scene.add(garage, garage2, garage3, garage4, garage5);
+
+    var controls = new THREE.TrackballControls(camera); 
+
+    document.getElementById('WebGL-output').appendChild(renderer.domElement);
+
+    render();
+
+    function render() {
+        controls.update();    
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+    }
+    
+    }
+//Browser ачааллах үзэгдэлд init функцийг дуудаж зуралтыг хийлгэж байна.
+    window.onload = init;
+ 
+</script>
+</body>
+</html>
